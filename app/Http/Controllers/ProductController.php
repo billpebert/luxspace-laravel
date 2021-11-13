@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,9 +21,25 @@ class ProductController extends Controller
             $query = Product::query();
 
             return DataTables::of($query)
+                ->addColumn('action', function ($item) {
+                    return '
+                    <div class="inline-flex gap-2">
+                        <a href="' . route('dashboard.product.edit', $item->id) . '" class="px-3 py-1 font-semibold text-white transition duration-300 ease-out bg-indigo-500 rounded-md hover:bg-indigo-700">
+                        Edit
+                        </a>
+                        <form action="' . route('dashboard.product.destroy', $item->id) . '" class="inline-block" method="POST">
+                            <button class="px-3 py-1 text-white transition duration-300 ease-out bg-red-500 rounded-md hover:bg-red-700">
+                                Delete
+                            </button>
+                            ' . method_field('delete') . csrf_field() . '
+                        </form>
+                    </div>
+                    ';
+                })
                 ->editColumn('price', function ($item) {
                     return number_format($item->price);
                 })
+                ->rawColumns(['action'])
                 ->make();
         }
 
@@ -44,9 +62,16 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        // return $request->all();
+
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+
+        Product::create($data);
+
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
@@ -66,9 +91,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        return view('pages.dashboard.product.edit', compact('product'));
     }
 
     /**
@@ -78,9 +103,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+
+        $product->update($data);
+
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
@@ -89,8 +119,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('dashboard.product.index');
     }
 }

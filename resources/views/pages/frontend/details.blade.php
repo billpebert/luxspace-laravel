@@ -6,7 +6,7 @@
     <div class="container mx-auto">
         <ul class="breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a href="{{ route('index') }}">Home</a>
             </li>
             <li>
                 <a href="#">Office Room</a>
@@ -29,51 +29,30 @@
         <div class="flex-1">
             <div class="slider">
                 <div class="thumbnail">
+                    @foreach ($product->galleries as $item)
                     <div class="px-2">
-                        <div class="item selected"
-                            data-img="{{ url('/frontend/images/content/showcase-1.front.jpg') }}">
-                            <img src="{{ url('/frontend/images/content/showcase-1.front.jpg') }}" alt="front"
+                        <div class="item {{ $loop->first ? 'selected' : '' }}"
+                            data-img="{{ Storage::url($item->url) }}">
+                            <img src="{{ Storage::url($item->url) }}" alt="front"
                                 class="object-cover w-full h-full rounded-lg" />
                         </div>
                     </div>
-                    <div class="px-2">
-                        <div class="item" data-img="{{ url('/frontend/images/content/showcase-1.back.jpg') }}">
-                            <img src="{{ url('/frontend/images/content/showcase-1.back.jpg') }}" alt="back"
-                                class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
-                    <div class="px-2">
-                        <div class="item" data-img="{{ url('/frontend/images/content/showcase-1.rear.jpg') }}">
-                            <img src="{{ url('/frontend/images/content/showcase-1.rear.jpg') }}" alt="rear"
-                                class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
-                    <div class="px-2">
-                        <div class="item" data-img="{{ url('/frontend/images/content/showcase-1.side.jpg') }}">
-                            <img src="{{ url('/frontend/images/content/showcase-1.side.jpg') }}" alt="side"
-                                class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
-                    <div class="px-2">
-                        <div class="item" data-img="{{ url('/frontend/images/content/showcase-1.top.jpg') }}">
-                            <img src="{{ url('/frontend/images/content/showcase-1.top.jpg') }}" alt="top"
-                                class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="preview">
                     <div class="h-full overflow-hidden rounded-lg item">
-                        <img src="{{ url('/frontend/images/content/showcase-1.front.jpg') }}" alt="front"
-                            class="object-cover w-full h-full rounded-lg" />
+                        <img src="{{ $product->galleries()->exists() ? Storage::url($product->galleries->first()->url) : 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==' }}"
+                            alt="
+                            front" class="object-contain w-full h-full rounded-lg" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="flex-1 px-4 md:p-6">
-            <h2 class="text-5xl font-semibold">Chair Thatty</h2>
-            <p class="text-xl">IDR 12.000.000</p>
+            <div class="text-5xl font-semibold">{{ $product->name }}</div>
+            <div class="my-4 text-xl">IDR {{ number_format($product->price) }}</div>
 
-            <a href="cart.html"
+            <a href="{{ route('cart') }}"
                 class="inline-flex px-8 py-3 mt-4 text-black transition-all duration-200 bg-pink-400 rounded-full focus:bg-black focus:text-pink-400"><svg
                     class="mr-3 fill-current" width="26" height="24" viewBox="0 0 26 24">
                     <path
@@ -91,16 +70,9 @@
             <hr class="my-8" />
 
             <h6 class="mb-4 text-xl font-semibold">About the product</h6>
-            <p class="mb-6 text-xl leading-7">
-                Tailored to a level of perfection synonymous with that of a Savile
-                Row suit and with understated quality in the detail, Jetty has been
-                influenced by timeless 1950s style.
-            </p>
-            <p class="text-xl leading-7">
-                Providing a subtle nod to the past, Jetty also provides a perfect
-                solution for the way we work today. A comprehensive product family,
-                Jetty features a variety of elegant chairs and sofas.
-            </p>
+            <div class="mb-6 text-xl leading-7">
+                {!! $product->description !!}
+            </div>
         </div>
     </div>
 </section>

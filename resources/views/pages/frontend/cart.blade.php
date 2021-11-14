@@ -77,9 +77,13 @@
                     </div>
                     <div class="w-2/12 px-4">
                         <div class="text-center">
-                            <button data-delete-item="1" class="px-3 py-1 text-red-600 border-none focus:outline-none">
-                                X
-                            </button>
+                            <form action="{{ route('deleteCart', $cart->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="px-3 py-1 text-red-600 border-none focus:outline-none">
+                                    X
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

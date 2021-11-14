@@ -20,7 +20,7 @@ class TransactionItem extends Model
 
     public function product()
     {
-        return $this->hasOne(Product::class, 'products_id', 'id');
+        return $this->hasOne(Product::class, 'id', 'products_id');
     }
 
     public function transaction()

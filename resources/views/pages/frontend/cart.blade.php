@@ -98,35 +98,36 @@
             </div>
             <div class="w-full md:px-4 md:w-4/12" id="shipping-detail">
                 <div class="px-4 py-6 bg-gray-100 md:p-8 md:rounded-3xl">
-                    <form action="success.html">
+                    <form action="{{ route('checkout') }}" method="POST">
+                        @csrf
                         <div class="flex mb-6 flex-start">
                             <h3 class="text-2xl">Shipping Details</h3>
                         </div>
 
                         <div class="flex flex-col mb-4">
                             <label for="complete-name" class="mb-2 text-sm">Complete Name</label>
-                            <input data-input type="text" id="complete-name"
+                            <input data-input type="text" name="name" id="complete-name"
                                 class="px-4 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-200 focus:outline-none"
                                 placeholder="Input your name" />
                         </div>
 
                         <div class="flex flex-col mb-4">
                             <label for="email" class="mb-2 text-sm">Email Address</label>
-                            <input data-input type="email" id="email"
+                            <input data-input type="email" name="email" id="email"
                                 class="px-4 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-200 focus:outline-none"
                                 placeholder="Input your email address" />
                         </div>
 
                         <div class="flex flex-col mb-4">
                             <label for="address" class="mb-2 text-sm">Address</label>
-                            <input data-input type="text" id="address"
+                            <input data-input type="text" name="address" id="address"
                                 class="px-4 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-200 focus:outline-none"
                                 placeholder="Input your address" />
                         </div>
 
                         <div class="flex flex-col mb-4">
                             <label for="phone-number" class="mb-2 text-sm">Phone Number</label>
-                            <input data-input type="tel" id="phone-number"
+                            <input data-input type="tel" name="phone" id="phone-number"
                                 class="px-4 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-200 focus:outline-none"
                                 placeholder="Input your phone number" />
                         </div>
